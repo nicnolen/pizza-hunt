@@ -1,4 +1,4 @@
-/* ROUTES FOR THE Pizza MODEL */
+/* ENDPOINTS (ROUTES) FOR THE Pizza MODEL */
 // Import dependencies
 const router = require('express').Router();
 const {
