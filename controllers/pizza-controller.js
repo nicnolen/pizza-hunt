@@ -6,7 +6,7 @@ const { Pizza } = require('../models');
 const pizzaController = {
   // get all pizzas (callback function for `GET /api/pizzas` route)
   getAllPizza(req, res) {
-    Pizza.find({}) 
+    Pizza.find({})
       .then(dbPizzaData => res.json(dbPizzaData))
       .catch(err => {
         console.error(err);
@@ -15,7 +15,8 @@ const pizzaController = {
   },
 
   // get one pizza by id (callback function for `GET /api/pizzas/:id)
-  getPizzaById({ params }, res) { // destructured `params` out since thats the only data we need to fulfill the request
+  getPizzaById({ params }, res) {
+    // destructured `params` out since thats the only data we need to fulfill the request
     Pizza.findOne({ _id: params.id })
       .then(dbPizzaData => {
         // if no pizza is found, send a 404 (pizza doesnt exist)
@@ -29,6 +30,13 @@ const pizzaController = {
         console.error(err);
         res.status(400).json(err);
       });
+  },
+
+  // add a pizza to the database (callback function for `POST /api/pizzas)
+  createPizza({ body }, res) {
+    Pizza.create(body)
+      .then(dbPizzaData => res.json(dbPizzaData))
+      .catch(err => res.status(400).json(err));
   },
 };
 
