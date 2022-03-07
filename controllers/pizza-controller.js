@@ -7,6 +7,13 @@ const pizzaController = {
   // get all pizzas (callback function for `GET /api/pizzas` route)
   getAllPizza(req, res) {
     Pizza.find({})
+      // populate comments
+      .populate({
+        path: 'comments', // we want the comments field populated
+        select: '-__v', // tell Mongoose we dont care about the `__v` field on comments. `-` indicates you dont want it to be returned. If there was no `-` then the `__v` field would ONLY be returned
+      })
+      .select('-__v') // tell Mongoose we dont want the pizza's `__v` field either
+      .sort({ _id: -1 }) // sort in DESC order by `_id` value
       .then(dbPizzaData => res.json(dbPizzaData))
       .catch(err => {
         console.error(err);
@@ -18,6 +25,11 @@ const pizzaController = {
   getPizzaById({ params }, res) {
     // destructured `params` out since thats the only data we need to fulfill the request
     Pizza.findOne({ _id: params.id })
+      .populate({
+        path: 'comment',
+        select: '-__v'
+      })
+      .select('-__v')
       .then(dbPizzaData => {
         // if no pizza is found, send a 404 (pizza doesnt exist)
         if (!dbPizzaData) {
