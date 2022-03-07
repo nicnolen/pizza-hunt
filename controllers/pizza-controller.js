@@ -13,6 +13,7 @@ const pizzaController = {
         select: '-__v', // tell Mongoose we dont care about the `__v` field on comments. `-` indicates you dont want it to be returned. If there was no `-` then the `__v` field would ONLY be returned
       })
       .select('-__v') // tell Mongoose we dont want the pizza's `__v` field either
+      .sort({ _id: -1 }) // sort in DESC order by `_id` value
       .then(dbPizzaData => res.json(dbPizzaData))
       .catch(err => {
         console.error(err);
