@@ -50,6 +50,19 @@ const pizzaController = {
       res.json(dbPizzaData);
     }).catch(err => res.status(400).json(err));
   },
+
+  // Delete pizza from database by id (callback function for `DELETE /api/pizzas/:id`)
+  deletePizza({ params }, res) {
+    Pizza.findOneAndDelete({ _id: params.id })
+      .then(dbPizzaData => {
+        if (!dbPizzaData) {
+          res.status(404).json({ message: 'No pizza found with this id' });
+          return;
+        }
+        res.json(dbPizzaData);
+      })
+      .catch(err => res.status(400).json(err));
+  },
 };
 
 // Export the pizzaController
