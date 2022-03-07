@@ -38,6 +38,18 @@ const pizzaController = {
       .then(dbPizzaData => res.json(dbPizzaData))
       .catch(err => res.status(400).json(err));
   },
+
+  // update pizza by id (callback function for `PUT /api/pizzas/:id`)
+  updatePizza({ params, body }, res) {
+    Pizza.findOneAndUpdate({ _id: params.id }, body, { new: true }); // if you dont set { new: true } then Mongoose will return the original document instead of the updated document
+    then(dbPizzaData => {
+      if (!dbPizzaData) {
+        res.status(404).json({ message: 'No pizza found with this id!' });
+        return;
+      }
+      res.json(dbPizzaData);
+    }).catch(err => res.status(400).json(err));
+  },
 };
 
 // Export the pizzaController
