@@ -1,20 +1,60 @@
 /* CREATE COMMENT MODEL */
 // Import dependecies
-const { Schema, model } = require('mongoose');
+const { Schema, model, Types } = require('mongoose'); // Types generates a unique identifier instead of the default '_id' field
+const dateFormat = require('../utils/dateFormat');
+
+// Create a Reply schema
+const ReplySchema = new Schema(
+  {
+    // set custom id to avoid confusion with parent comment _id
+    replyId: {
+      type: Schema.Types.ObjectId,
+      default: () => new Types.ObjectId(),
+    },
+    replyBody: {
+      type: String,
+    },
+    writtenBy: {
+      type: String,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+      get: createdAtVal => dateFormat(createdAtVal),
+    },
+  },
+  {
+    toJSON: {
+      getters: true,
+    },
+  }
+);
 
 // Create the Comment schema
-const CommentSchema = new Schema({
-  writtenBy: {
-    type: String,
+const CommentSchema = new Schema(
+  {
+    writtenBy: {
+      type: String,
+    },
+    commentBody: {
+      type: String,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+      get: createdAtVal => dataFormat(createdAtVal),
+    },
+    // use ReplySchema to validate data for a reply
+    replies: [ReplySchema],
   },
-  commentBody: {
-    type: String,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-});
+  {
+    toJSON: {
+      virtuals: true,
+      getters: true,
+    },
+    id: false,
+  }
+);
 
 // Create the Comment model
 const Comment = model('Comment', CommentSchema);
