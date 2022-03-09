@@ -24,6 +24,8 @@ const PizzaSchema = new Schema(
     size: {
       type: String,
       default: 'Large',
+      enum: ['Personal', 'Small', 'Medium', 'Large', 'Extra Large'], // enumerable data is a set of data that can be iterated over
+      default: 'Large'
     },
     toppings: [], // could have specified `Array` instead
     comments: [
