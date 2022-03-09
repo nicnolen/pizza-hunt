@@ -16,8 +16,8 @@ const pizzaController = {
       .sort({ _id: -1 }) // sort in DESC order by `_id` value
       .then(dbPizzaData => res.json(dbPizzaData))
       .catch(err => {
-        console.error(err);
-        res.status(400).json(err);
+        console.log(err);
+        res.sendStatus(400);
       });
   },
 
@@ -26,7 +26,7 @@ const pizzaController = {
     // destructured `params` out since thats the only data we need to fulfill the request
     Pizza.findOne({ _id: params.id })
       .populate({
-        path: 'comment',
+        path: 'comments',
         select: '-__v'
       })
       .select('-__v')
